@@ -1,5 +1,4 @@
-import notifications from '../src/modules/notifications'
-
+import Notifications from '../src/modules/notifications' 
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -21,8 +20,7 @@ const isLocalhost = Boolean(
 );
 
 
-export default function register() {
-    debugger
+export default function register() { 
     if ('serviceWorker' in navigator) {
         // The URL constructor is available in all browsers that support SW.
         const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
@@ -52,8 +50,9 @@ export default function register() {
 function registerValidSW(swUrl) {
     navigator.serviceWorker
         .register(swUrl)
-        .then(registration => {
-            notifications(registration);
+        .then(registration => { 
+            const notifications = new Notifications(registration);
+            notifications.subscribeUser();
 
             registration.onupdatefound = () => {
                 const installingWorker = registration.installing;
@@ -110,6 +109,9 @@ function checkValidServiceWorker(swUrl) {
 export function unregister() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(registration => {
+            const notifications = new Notifications(registration);
+            notifications.unsubscribeUser();
+
             registration.unregister();
         });
     }
